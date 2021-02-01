@@ -1,12 +1,13 @@
 <template>
   <div class="container-fluid">
-    <div class="row fixed-top top border-bottom pt-2">
+    <div class="row fixed-top top border-bottom pt-2" ref="top">
       <div class="col-lg-4 col-md-12 col-sm-12 col-12 mb-1 form-group">
         <label>初期: </label>
         <select class="form-control-sm" v-model="firstFacetId">
           <option value="">----</option>
           <option v-for="(facet, idx) in facets" :key="idx" :value="facet.id">{{ facet.name }}</option>
         </select>
+        <b-button class="btn-sm ml-2" @click="clickGoFirst">Go</b-button>
       </div>
 
       <div class="col-lg-4 col-md-12 col-sm-12 col-12 mb-1 form-group">
@@ -15,6 +16,7 @@
           <option value="">----</option>
           <option v-for="(facet, idx) in facets" :key="idx" :value="facet.id">{{ facet.name }}</option>
         </select>
+        <b-button class="btn-sm ml-2" @click="clickGoLast">Go</b-button>
       </div>
 
       <div class="col-lg-3 col-md-12 col-sm-12 col-12 mb-1 form-group">
@@ -29,7 +31,7 @@
     </div>
 
     <div class="row facet-wrapper">
-      <div class="col-md-6 col-sm-12 col-12 mb-4" v-for="(facet, idx) in facets" :key="idx">
+      <div class="col-md-6 col-sm-12 col-12 mb-4" v-for="(facet, idx) in facets" :key="idx" :id="facet.id">
         <p class="facet-name">{{ facet.name }}</p>
         <table class="table table-bordered">
           <tr class="skill" v-for="(skill, idx2) in facet.skills" :key="`${idx}-${idx2}`" :class="{'bg-warning': skill.isChecked}">
@@ -2461,6 +2463,21 @@ export default {
     }
   },
   methods: {
+    topHeight() {
+      return this.$refs.top.clientHeight;
+    },
+    clickGoFirst(e) {
+      e.preventDefault();
+      if (this.firstFacetId) {
+        this.$scrollTo(`#${this.firstFacetId}`, {offset: -this.topHeight() - 5});
+      }
+    },
+    clickGoLast(e) {
+      e.preventDefault();
+      if (this.lastFacetId) {
+        this.$scrollTo(`#${this.lastFacetId}`, {offset: -this.topHeight() - 5});
+      }
+    },
     clickSkill(e) {
       e.preventDefault();
       const idx = e.currentTarget.dataset.idx;
