@@ -26,7 +26,7 @@
         </p>
       </div>
     </div>
-    <div class="top-btn">
+    <div class="top-btn" v-if="!isInternal">
       <b-button v-b-modal.modal2 class="btn-sm mt-2 mr-2">説明</b-button>
     </div>
 
@@ -2496,6 +2496,9 @@ export default {
     },
   },
   computed: {
+    isInternal() {
+      return window.location.hostname.match('^192.168.');
+    },
     firstFacet() {
       const facet = this.facets.find(facet => facet.id === this.firstFacetId);
       if (facet) return facet;
